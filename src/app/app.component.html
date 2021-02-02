@@ -1,0 +1,36 @@
+<mat-toolbar color="accent">
+  <button mat-icon-button>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>Lottery App</span>
+</mat-toolbar>
+<div class="screen">
+  <mat-card>
+    <mat-form-field  appearance="fill">
+      <mat-label>Lottery Number</mat-label>
+      <input matInput name="lotteryInput" [(ngModel)]="lotteryInput" (keydown.enter)="onClickSubmitBtn()" style="text-transform:uppercase" />
+    </mat-form-field>
+    <button mat-mini-fab color="primary" style="margin: 15px;" (click)="onClickSubmitBtn()"><mat-icon>done</mat-icon></button>
+    <button mat-mini-fab color="accent" (click)="onClickRemoveBtn()"><mat-icon>remove</mat-icon></button>
+  </mat-card>
+  <div class="screen-1">
+    <mat-card>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef> No. </th>
+          <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+        </ng-container>
+        <ng-container matColumnDef="lotteryDetail">
+          <th mat-header-cell *matHeaderCellDef> Lottery. </th>
+          <td mat-cell *matCellDef="let element" style="text-transform:uppercase"> {{element.lotteryDetail}} </td>
+        </ng-container>
+        <ng-container matColumnDef="occurance">
+          <th mat-header-cell *matHeaderCellDef> Occurance. </th>
+          <td mat-cell *matCellDef="let element"> {{element.occurance}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card>
+  </div>
+</div>
