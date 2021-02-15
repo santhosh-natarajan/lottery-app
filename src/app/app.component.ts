@@ -26,45 +26,57 @@ export class AppComponent {
     }
   }
 
+  splitingInputs() {
+    let splittedInputs = [];
+    this.lotteryInput.split("\n").filter((item) => {
+      return splittedInputs.push(item.trim());
+    });
+    return splittedInputs;
+  }
+
   onClickSubmitBtn() {
-    if (this.dataSource.length !== 0) {
-      let loopResult = this.dataSource.filter((item) => {
-        let localInput = this.lotteryInput.includes("-")
-          ? this.lotteryInput.split("-")[0]
-          : this.lotteryInput;
-        if (item.lotteryDetail == localInput) {
-          if (this.lotteryInput.includes("-")) {
-            return (item.occurance += parseInt(
-              this.lotteryInput.split("-")[1]
-            ));
-          } else {
-            return (item.occurance += 1);
-          }
-        }
-      });
-      if (loopResult.length == 0) {
+    let processedInputs = this.splitingInputs();
+    const checkIncludes = (data) =>
+      data.lotteryDetail == processedInputs[0].split("-")[0];
+    if (this.dataSource.length !== 0 && processedInputs[0].includes("-")) {
+      let duplicateCheck = this.dataSource.some(checkIncludes);
+      if (duplicateCheck) {
+        this.dataSource.map((item) => {
+          processedInputs.filter((processedInput) => {
+            if (item.lotteryDetail == processedInput.split("-")[0]) {
+              return (item.occurance += parseInt(processedInput.split("-")[1]));
+            }
+          });
+        });
+      } else {
+        let userInput = this.lotteryInput.split("\n");
+        userInput.map((item, index) => {
+          let lotteryData = {
+            position: this.dataSource.length + 1,
+            lotteryDetail: item.trim().includes("-")
+              ? item.trim().split("-")[0]
+              : item.trim(),
+            occurance: item.trim().includes("-")
+              ? parseInt(item.trim().split("-")[1])
+              : 1,
+          };
+          this.dataSource.push(lotteryData);
+        });
+      }
+    } else {
+      let userInput = this.lotteryInput.split("\n");
+      userInput.map((item, index) => {
         let lotteryData = {
           position: this.dataSource.length + 1,
-          lotteryDetail: this.lotteryInput.includes("-")
-            ? this.lotteryInput.split("-")[0]
-            : this.lotteryInput,
-          occurance: this.lotteryInput.includes("-")
-            ? parseInt(this.lotteryInput.split("-")[1])
+          lotteryDetail: item.trim().includes("-")
+            ? item.trim().split("-")[0]
+            : item.trim(),
+          occurance: item.trim().includes("-")
+            ? parseInt(item.trim().split("-")[1])
             : 1,
         };
         this.dataSource.push(lotteryData);
-      }
-    } else {
-      let lotteryData = {
-        position: 1,
-        lotteryDetail: this.lotteryInput.includes("-")
-          ? this.lotteryInput.split("-")[0]
-          : this.lotteryInput,
-        occurance: this.lotteryInput.includes("-")
-          ? parseInt(this.lotteryInput.split("-")[1])
-          : 1,
-      };
-      this.dataSource.push(lotteryData);
+      });
     }
     this.lotteryInput = "";
     this.table.renderRows();

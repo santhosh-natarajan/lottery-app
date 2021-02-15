@@ -6,9 +6,9 @@
 </mat-toolbar>
 <div class="screen">
   <mat-card>
-    <mat-form-field  appearance="fill">
+    <mat-form-field  appearance="fill" class="full-width">
       <mat-label>Lottery Number</mat-label>
-      <input matInput name="lotteryInput" [(ngModel)]="lotteryInput" (keydown.enter)="onClickSubmitBtn()" style="text-transform:uppercase" />
+      <textarea matInput name="lotteryInput" [(ngModel)]="lotteryInput" (keydown.enter)="onClickSubmitBtn()" style="text-transform:uppercase"></textarea>
     </mat-form-field>
     <button mat-mini-fab color="primary" style="margin: 15px;" (click)="onClickSubmitBtn()"><mat-icon>done</mat-icon></button>
     <button mat-mini-fab color="accent" (click)="onClickRemoveBtn()"><mat-icon>remove</mat-icon></button>
